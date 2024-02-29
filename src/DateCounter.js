@@ -1,19 +1,42 @@
-import { useReducer, useState } from "react";
+import { useReducer } from "react";
 
 function reducer(state, action) {
+  const initalState = { count: 0, step: 1 };
   console.log(state, action);
+
+  switch (action.type) {
+    case "dec":
+      return { ...state, count: state.count - state.step };
+
+    case "inc":
+      return { ...state, count: state.count + state.step };
+
+    case "setCount":
+      return { ...state, count: action.payload };
+
+    case "setStep":
+      return { ...state, step: action.payload };
+
+    case "reset":
+      return initalState;
+
+    default:
+      throw new Error("unknown action");
+  }
+
   // if (action.type === "inc") return state + action.payload;
   // if (action.type === "dec") return state - action.payload;
-  if (action.type === "inc") return state + 1
-  if (action.type === "dec") return state - 1
-  if (action.type === "setCount") return action.payload;
+  // if (action.type === "inc") return state + 1
+  // if (action.type === "dec") return state - 1
+  // if (action.type === "setCount") return action.payload;
 }
 
 function DateCounter() {
   // const [count, setCount] = useState(0);
+  // const [step, setStep] = useState(1);
 
-  const [count, dispatch] = useReducer(reducer, 0);
-  const [step, setStep] = useState(1);
+  const [state, dispatch] = useReducer(reducer, { count: 0, step: 1 });
+  const { count, step } = state;
 
   // This mutates the date object.
   const date = new Date("june 21 2027");
@@ -21,7 +44,7 @@ function DateCounter() {
 
   const dec = function () {
     // dispatch({ type: "dec", payload: -1 });
-    dispatch({ type: "dec"});
+    dispatch({ type: "dec" });
     // setCount((count) => count - 1);
     // setCount((count) => count - step);
   };
@@ -39,12 +62,14 @@ function DateCounter() {
   };
 
   const defineStep = function (e) {
+    dispatch({ type: "setStep", payload: Number(e.target.value) });
     // setStep(Number(e.target.value));
   };
 
   const reset = function () {
+    dispatch({ type: "reset" });
     // setCount(0);
-    setStep(1);
+    // setStep(1);
   };
 
   return (

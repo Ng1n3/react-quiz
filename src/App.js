@@ -1,7 +1,12 @@
-import DateCounter from "./DateCounter";
+import Header from "./Header";
 
 export default function App() {
-  return <div>
-    <DateCounter/>
+  return <div className="app">
+    <Header/>
+
+    <main>
+      <p>1 / 15</p>
+      <p>Questions?</p>
+    </main>
   </div>
 }
